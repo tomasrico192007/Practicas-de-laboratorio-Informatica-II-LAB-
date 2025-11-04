@@ -18,17 +18,17 @@ int main(int argc, char** argv) {
         if (!net.loadFromFile(filename)) return 1;
     }
 
-    cout << "Topología cargada desde" << filename << ".\n\n";
+    cout << "Topología cargada desde" << filename << endl;
 
-    cout << "Los comandos disponibles son:";
-    cout << "  lista                         - listar routers";
-    cout << "  tabla <R>                    - mostrar tabla de enrutamiento de R";
-    cout << "  costo <ORIG> <DEST>           - mostrar costo solo";
-    cout << "  path <ORIG> <DEST>           - mostrar camino y costo";
-    cout << "  añadirrouter <R>                - agregar router (sin enlaces)";
-    cout << "  removerrouter <R>             - eliminar router";
-    cout << "  añadircamino <A> <B> <cost>       - agregar o actualizar enlace";
-    cout << "  salir                         - salir";
+    cout << "Los comandos disponibles son:"<< endl;
+    cout << "  lista                         - listar routers"<<endl;
+    cout << "  tabla <R>                    - mostrar tabla de enrutamiento de R"<<endl;
+    cout << "  costo <ORIG> <DEST>           - mostrar costo solo"<<endl;
+    cout << "  path <ORIG> <DEST>           - mostrar camino y costo"<<endl;
+    cout << "  añadirrouter <R>                - agregar router (sin enlaces)"<<endl;
+    cout << "  removerrouter <R>             - eliminar router"<<endl;
+    cout << "  añadircamino <A> <B> <cost>       - agregar o actualizar enlace"<<endl;
+    cout << "  salir                         - salir"<<endl;
 
     string cmd;
     while (true) {
@@ -78,3 +78,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
