@@ -6,8 +6,10 @@ CONFIG -= qt
 SOURCES += \
         main.c \
         obstaculo.cpp \
-        particula.cpp
+        particula.cpp \
+        simulador.cpp
 
 HEADERS += \
     obstaculo.h \
-    particula.h
+    particula.h \
+    simulador.h
