@@ -70,3 +70,13 @@ void Particula::setVY(double nuevo_vy)
 {
     this->vy = nuevo_vy;
 }
+
+void Particula::setMasa(double nueva_masa)
+{
+    this->masa = nueva_masa;
+}
+
+void Particula::setRadio(double nuevo_radio)
+{
+    this->radio = nuevo_radio;
+}

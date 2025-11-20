@@ -31,6 +31,8 @@ public:
     //por otro lado los metodos set, son como lo dice la palabra al español, para poner, para establecer o modificar un parametro//
     void setVX(double nuevo_vx);
     void setVY(double nuevo_vy);
+    void setMasa(double nueva_masa);
+    void setRadio(double nuevo_radio);
 
 };
 
