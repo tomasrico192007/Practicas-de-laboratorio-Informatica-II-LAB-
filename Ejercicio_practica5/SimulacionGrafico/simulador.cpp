@@ -6,75 +6,88 @@ Simulador::Simulador(double ancho, double alto, double e)
 {
 }
 
-void Simulador::agregarParticula(Particula p) {
+Simulador::~Simulador() {
+    for (Particula* p : particulas) {
+        delete p;
+    }
+    for (Obstaculo* o : obstaculos) {
+        delete o;
+    }
+}
+
+void Simulador::agregarParticula(Particula* p) {
     particulas.push_back(p);
 }
 
-void Simulador::agregarObstaculo(Obstaculo o) {
+void Simulador::agregarObstaculo(Obstaculo* o) {
     obstaculos.push_back(o);
 }
 
 //Este seria como el apartado de las paredes, o lo que delimita al objeto o particula de que no siga avanzando y rebote//
-void Simulador::resolverColisionesParedes(Particula& p)
+void Simulador::resolverColisionesParedes(Particula* p)
 {
 
-    if (p.getX() + p.getRadio() >= anchoCaja) {
-        p.setVX( -abs(p.getVX()) );
+    if (p->getX() + p->getRadio() >= anchoCaja) {
+        p->setVX( -std::abs(p->getVX()) );
     }
 
-    else if (p.getX() - p.getRadio() <= 0) {
-        p.setVX( abs(p.getVX()) );
+    else if (p->getX() - p->getRadio() <= 0) {
+        p->setVX( std::abs(p->getVX()) );
     }
 
-    if (p.getY() + p.getRadio() >= altoCaja) {
-        p.setVY( -abs(p.getVY()) );
+    if (p->getY() + p->getRadio() >= altoCaja) {
+        p->setVY( -std::abs(p->getVY()) );
     }
 
-    else if (p.getY() - p.getRadio() <= 0) {
-        p.setVY( abs(p.getVY()) );
+    else if (p->getY() - p->getRadio() <= 0) {
+        p->setVY( std::abs(p->getVY()) );
     }
 }
 
 //Lo mismo, solo que de manera inelastica, y con un obstaculo u objeto como le quiera decir//
-void Simulador::resolverColisionesObstaculos(Particula& p)
+void Simulador::resolverColisionesObstaculos(Particula* p)
 {
-    for (const Obstaculo& obs : obstaculos) {
-        int tipo = obs.tipoDeRebote(p);
-
+    for (Obstaculo* obs : obstaculos) {
+        int tipo = obs->tipoDeRebote(*p);
         if (tipo == 1) {
-            p.setVX( -p.getVX() * coef_restitucion );
-        }
-        else if (tipo == 2) {
-            p.setVY( -p.getVY() * coef_restitucion );
+            p->setVX( -p->getVX() * coef_restitucion );
+        } else if (tipo == 2) {
+            p->setVY( -p->getVY() * coef_restitucion );
         }
     }
 }
 
 void Simulador::resolverColisionesParticulas()
 {
-    // Choque entre partículas: Fusión (Inelástico perfecto) [cite: 85-90]
-    // Nota: Esto es complejo porque al borrar elementos del vector mientras
-    // lo recorres, puedes causar errores. Se debe hacer con cuidado.
 
-    for (size_t i = 0; i < particulas.size(); ++i) {
-        for (size_t j = i + 1; j < particulas.size(); ++j) {
+    for (auto it1 = particulas.begin(); it1 != particulas.end(); ++it1) {
+        Particula* p1 = *it1;
 
-            if (particulas[i].estaColisionando(particulas[j])) {
-                Particula& p1 = particulas[i];
-                Particula& p2 = particulas[j];
+        for (auto it2 = std::next(it1); it2 != particulas.end();) {
+            Particula* p2 = *it2;
 
-                double m1 = p1.getMasa();
-                double m2 = p2.getMasa();
+            if (p1->estaColisionando(*p2)) {
+
+                double m1 = p1->getMasa();
+                double m2 = p2->getMasa();
                 double M = m1 + m2;
 
-                double vNuevaX = (m1 * p1.getVX() + m2 * p2.getVX()) / M;
-                double vNuevaY = (m1 * p1.getVY() + m2 * p2.getVY()) / M;
+                double vNuevaX = (m1 * p1->getVX() + m2 * p2->getVX()) / M;
+                double vNuevaY = (m1 * p1->getVY() + m2 * p2->getVY()) / M;
 
-                p1.setVX(vNuevaX);
-                p1.setVY(vNuevaY);
+                p1->setVX(vNuevaX);
+                p1->setVY(vNuevaY);
 
-                particulas.erase(particulas.begin() + j);
-                j--;
+                p1->setMasa(M);
+
+                double areaTotal = std::pow(p1->getRadio(), 2) + std::pow(p2->getRadio(), 2);
+                p1->setRadio(std::sqrt(areaTotal));
+
+                delete p2;
+
+                it2 = particulas.erase(it2);
+            } else {
+                ++it2;
             }
         }
     }
@@ -82,15 +95,13 @@ void Simulador::resolverColisionesParticulas()
 
 void Simulador::pasoDeSimulacion(double dt)
 {
-    //Aca se mueven las parcitulas
-    for (Particula& p : particulas) {
-        p.mover(dt);
+    for (Particula* p : particulas) {
+        p->mover(dt);
     }
 
-//Verificamos y resolvemos las colisiones o choques//
     resolverColisionesParticulas();
 
-    for (Particula& p : particulas) {
+    for (Particula* p : particulas) {
         resolverColisionesParedes(p);
         resolverColisionesObstaculos(p);
     }
@@ -100,8 +111,8 @@ void Simulador::pasoDeSimulacion(double dt)
 void Simulador::guardarEstado(std::ofstream& archivo, double tiempoActual)
 {
     archivo << tiempoActual;
-    for (const Particula& p : particulas) {
-        archivo << "\t" << p.getX() << "\t" << p.getY();
+    for (const Particula* p : particulas) {
+        archivo << "\t" << p->getX() << "\t" << p->getY();
     }
     archivo << std::endl;
 }

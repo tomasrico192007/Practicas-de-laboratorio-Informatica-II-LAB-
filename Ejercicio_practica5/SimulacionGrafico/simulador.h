@@ -13,17 +13,17 @@ private:
     double anchoCaja;
     double altoCaja;
 
-    std::vector<Particula> particulas;
-    std::vector<Obstaculo> obstaculos;
+    std::vector<Particula*> particulas;
+    std::vector<Obstaculo*> obstaculos;
 
     //Para choques con los obstaculos
     double coef_restitucion;
 
     //Este seria un choque o una colision elastica o perfectamente elastica//
-    void resolverColisionesParedes(Particula& p);
+    void resolverColisionesParedes(Particula* p);
 
     //Este seria un choque o una colision inelastica//
-    void resolverColisionesObstaculos(Particula& p);
+    void resolverColisionesObstaculos(Particula* p);
 
     //Este seria el choque o colision entre particulas, perfectamente inelastico//
     void resolverColisionesParticulas();
@@ -31,9 +31,10 @@ private:
 public:
     //Tamaño de las cajas (paredes)//
     Simulador(double ancho, double alto, double e);
+    ~Simulador();
 
-    void agregarParticula(Particula p);
-    void agregarObstaculo(Obstaculo o);
+    void agregarParticula(Particula* p);
+    void agregarObstaculo(Obstaculo* o);
 
     void pasoDeSimulacion(double dt);
 
