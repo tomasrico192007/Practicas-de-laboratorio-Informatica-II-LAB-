@@ -9,7 +9,7 @@
 class Simulador
 {
 private:
-//Estos vendrian siendo como las paredes de las que se hablaron en clase//
+    //Estos vendrian siendo como las paredes de las que se hablaron en clase//
     double anchoCaja;
     double altoCaja;
 
@@ -35,10 +35,12 @@ public:
 
     void agregarParticula(Particula* p);
     void agregarObstaculo(Obstaculo* o);
+    void eliminarParticula(Particula* p);
 
     void pasoDeSimulacion(double dt);
 
     void guardarEstado(std::ofstream& archivo, double tiempoActual);
-};
 
+    Obstaculo* getObstaculo(int index) const;
+};
 #endif // SIMULADOR_H

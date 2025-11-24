@@ -12,13 +12,17 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     obstaculo.cpp \
+    obstaculografico.cpp \
     particula.cpp \
+    particulagrafica.cpp \
     simulador.cpp
 
 HEADERS += \
     mainwindow.h \
     obstaculo.h \
+    obstaculografico.h \
     particula.h \
+    particulagrafica.h \
     simulador.h
 
 FORMS += \

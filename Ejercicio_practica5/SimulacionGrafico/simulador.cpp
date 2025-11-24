@@ -1,5 +1,13 @@
 #include "simulador.h"
 #include <iostream>
+#include <algorithm>
+
+Obstaculo* Simulador::getObstaculo(int index) const {
+    if (index >= 0 && index < obstaculos.size()) {
+        return obstaculos[index];
+    }
+    return nullptr;
+}
 
 Simulador::Simulador(double ancho, double alto, double e)
     : anchoCaja(ancho), altoCaja(alto), coef_restitucion(e)
@@ -116,3 +124,15 @@ void Simulador::guardarEstado(std::ofstream& archivo, double tiempoActual)
     }
     archivo << std::endl;
 }
+
+void Simulador::eliminarParticula(Particula* p) {
+    // Buscamos el puntero 'p' en el vector 'particulas'
+    auto it = std::find(particulas.begin(), particulas.end(), p);
+
+    // Si lo encontramos, lo borramos del vector y luego liberamos la memoria
+    if (it != particulas.end()) {
+        delete *it; // Liberar la memoria del objeto Particula
+        particulas.erase(it); // Quitar el puntero del vector
+    }
+}
+
