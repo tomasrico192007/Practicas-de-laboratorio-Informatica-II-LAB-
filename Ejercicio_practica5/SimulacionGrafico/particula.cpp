@@ -80,3 +80,7 @@ void Particula::setRadio(double nuevo_radio)
 {
     this->radio = nuevo_radio;
 }
+void Particula::setG(double gravedad)
+{
+    this->g = gravedad;
+}

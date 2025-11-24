@@ -10,15 +10,14 @@ private:
     double vx, vy;
     double masa;
     double radio;
+    double g;
 
 public:
     Particula(double x_inicial, double y_inicial, double vx_inicial, double vy_inicial, double masa, double radio);
 
     //metodos principales//
     void mover(double delta_t);
-
     bool estaColisionando(Particula& otra);
-
 
     //Los metodos get es para obtener los valores//
     double getX() const;
@@ -33,6 +32,7 @@ public:
     void setVY(double nuevo_vy);
     void setMasa(double nueva_masa);
     void setRadio(double nuevo_radio);
+    void setG(double gravedad);
 
 };
 
