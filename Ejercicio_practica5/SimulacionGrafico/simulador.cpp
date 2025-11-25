@@ -56,11 +56,15 @@ void Simulador::resolverColisionesParedes(Particula* p)
 void Simulador::resolverColisionesObstaculos(Particula* p)
 {
     for (Obstaculo* obs : obstaculos) {
-        int tipo = obs->tipoDeRebote(*p);
-        if (tipo == 1) {
-            p->setVX( -p->getVX() * coef_restitucion );
-        } else if (tipo == 2) {
-            p->setVY( -p->getVY() * coef_restitucion );
+        if (!obs->estaDestruido() && obs->verificaColision(*p)) {
+
+            double dano = p->getMasa();
+            obs->recibirDano(dano);
+
+            p->setVX(0.0);
+            p->setVY(0.0);
+
+            return;
         }
     }
 }
@@ -126,13 +130,19 @@ void Simulador::guardarEstado(std::ofstream& archivo, double tiempoActual)
 }
 
 void Simulador::eliminarParticula(Particula* p) {
-    // Buscamos el puntero 'p' en el vector 'particulas'
     auto it = std::find(particulas.begin(), particulas.end(), p);
 
-    // Si lo encontramos, lo borramos del vector y luego liberamos la memoria
     if (it != particulas.end()) {
-        delete *it; // Liberar la memoria del objeto Particula
-        particulas.erase(it); // Quitar el puntero del vector
+        delete *it;
+        particulas.erase(it);
     }
 }
+
+int Simulador::getNumObstaculos() const
+{
+    return obstaculos.size();
+}
+
+
+
 

@@ -32,18 +32,22 @@ bool Obstaculo::estaDestruido() const
 
 bool Obstaculo::verificaColision(const Particula& p) const
 {
-    double centroX = p.getX();
-    double centroY = p.getY();
+    double p_x = p.getX();
+    double p_y = p.getY();
+    double p_r = p.getRadio();
 
-    double cercanoX = std::max(this->x, std::min(centroX, this->x + this->ancho));
-    double cercanoY = std::max(this->y, std::min(centroY, this->y + this->alto));
+    double rect_left = x;
+    double rect_right = x + ancho;
+    double rect_bottom = y;
+    double rect_top = y + alto;
 
-    double distanciaX = centroX - cercanoX;
-    double distanciaY = centroY - cercanoY;
+    double closestX = std::max(rect_left, std::min(p_x, rect_right));
+    double closestY = std::max(rect_bottom, std::min(p_y, rect_top));
 
-    double distanciaCuadrada = (distanciaX * distanciaX) + (distanciaY * distanciaY);
+    double dist_x = p_x - closestX;
+    double dist_y = p_y - closestY;
 
-    return distanciaCuadrada < (p.getRadio() * p.getRadio());
+    return (dist_x * dist_x + dist_y * dist_y) < (p_r * p_r);
 }
 
 int Obstaculo::tipoDeRebote(const Particula& p) const

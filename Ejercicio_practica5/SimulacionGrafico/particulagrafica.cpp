@@ -5,7 +5,7 @@ ParticulaGrafica::ParticulaGrafica(Particula* particula)
     p = particula;
     radioGrafico = (int)p->getRadio();
 
-    // Carga la imagen para representar el objeto, o lo que se mueve
+    // Carga la imagen para representar el objeto, o lo que se mueve//
     pixmap.load(":/ave/pajaro.png");
     pixmap = pixmap.scaled(2 * radioGrafico, 2 * radioGrafico, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 

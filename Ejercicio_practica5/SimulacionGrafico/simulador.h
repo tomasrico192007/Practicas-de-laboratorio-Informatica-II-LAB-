@@ -39,8 +39,10 @@ public:
 
     void pasoDeSimulacion(double dt);
 
+    int getNumObstaculos() const;
+    Obstaculo* getObstaculo(int index) const;
+
     void guardarEstado(std::ofstream& archivo, double tiempoActual);
 
-    Obstaculo* getObstaculo(int index) const;
 };
 #endif // SIMULADOR_H

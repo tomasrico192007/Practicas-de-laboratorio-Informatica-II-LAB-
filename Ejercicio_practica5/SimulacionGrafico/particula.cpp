@@ -1,10 +1,11 @@
 #include "particula.h"
-#include <cmath> // Necesario para std::pow y std::sqrt
+#include <cmath>
+#include <QDebug>
 
 Particula::Particula(double x_inicial, double y_inicial, double vx_inicial, double vy_inicial, double masa, double radio)
     : x(x_inicial), y(y_inicial), vx(vx_inicial), vy(vy_inicial), masa(masa), radio(radio)
 {
-
+    g = 9.8;
 }
 
 
@@ -12,12 +13,12 @@ Particula::Particula(double x_inicial, double y_inicial, double vx_inicial, doub
 
 void Particula::mover(double delta_t)
 {
-    double vy_new = vy + g * delta_t;
+    this->vy += g * delta_t;
 
     x += vx * delta_t;
-    y += vy * delta_t + 0.5 * g * delta_t * delta_t;
+    y += vy * delta_t;
 
-    vy = vy_new;
+    qDebug() << "Moviendo -> Y:" << y << " VY:" << vy << " Gravedad:" << g;
 }
 
 bool Particula::estaColisionando(Particula& otra)
